@@ -1,69 +1,43 @@
 #include <stdio.h>
-#include <math.h>
 
-typedef struct{
-    int data;
-    int begin;
-    int end;
-} jielong;
+#define MAX_N 100005
 
-int mini_delete = 9999;
-int N;
-int deleted[100];
-int weishu(int num){
-    int ret = 0;
-    while (num>10) {
-        ret++;
-        num /= 10;
-    }
-    return ret;
+int max(int a, int b) {
+    return a > b ? a : b;
 }
 
-int is_jielong(jielong* arr){
-    int i = 0;
-    for (i=0; i<N-1; i++) {
-        if(!deleted[i] && arr[i].end != arr[i+1].begin){
-            return i;
-        }
-    }
-    return -1;
-}
+int minDeletionsToMakeChain(int A[], int N) {
+    int dp[MAX_N];
+    int i, j, maxChainLength = 1;
 
-void dfs(jielong* a, int n, int delete_count){ //这里用n表示深度
-    if(is_jielong(a) == -1){
-        if(delete_count<mini_delete){
-            mini_delete = delete_count;
-        }
-        return;
+    for (i = 0; i < N; i++) {
+        dp[i] = 1;
     }
-    if(n == N-1){
-        return;
-    }
-    for (int i=0; i<n; i++) {
-        deleted[i] = 1;
-        delete_count++;
-        if(is_jielong(a) == -1){
-            if(delete_count<mini_delete){
-                mini_delete = delete_count;
+
+    for (i = 1; i < N; i++) {
+        for (j = 0; j < i; j++) {
+            if (A[i] / 10 == A[j] % 10) {
+                dp[i] = max(dp[i], dp[j] + 1);
             }
-            return;
         }
-        dfs(a, n+1, delete_count);
-        deleted[i] = 0;
+        maxChainLength = max(maxChainLength, dp[i]);
     }
+
+    return N - maxChainLength;
 }
 
-int main(int argc, const char * argv[]) {
-    //处理输入
+int main() {
+    int N, A[MAX_N], i;
+
+    // 读取输入
     scanf("%d", &N);
-    jielong arr[N];
-    for (int i=0; i<N; i++) {
-        scanf("%d", &arr[i].data);
-        arr[i].end = arr[i].data%10;
-        int a = pow(10, weishu(arr[i].data));
-        arr[i].begin = arr[i].data/a;
+    for (i = 0; i < N; i++) {
+        scanf("%d", &A[i]);
     }
-    dfs(arr, 0, 0);
-    printf("%d\n", mini_delete);
+
+    // 计算答案并输出
+    int result = minDeletionsToMakeChain(A, N);
+    printf("%d\n", result);
+
     return 0;
 }
