@@ -7,94 +7,47 @@
 
 #include <stdio.h>
 
-void test(void){
-    int a[20][20];
-    a[0][0] = 1;
+void test1(void){
+    int a[50][50] = {1};
     int i = 0;
     int j = 0;
     while (1) {
-        if(i==19 && j==19){
+        if(j>40){
             break;
         }
         //右移
-        while (1) {
-            a[i][j+1] = a[i][j] + 1;
-            j++;
-            if (0==i && j%2 == 0){
-                break;
-            }
-        }
+        a[i][j+1] = a[i][j] + 1;
+        j++;
+        
         //左下
         while (1) {
             a[i+1][j-1] = a[i][j] + 1;
             i++;j--;
-            if (0==i && j%2 == 1){
+            if (0==j){
                 break;
             }
         }
         //下
-        while (1) {
-            a[i+1][j] = a[i][j] + 1;
-            i++;
-            if (0==j && i%2 == 1){
-                break;
-            }
-        }
+        a[i+1][j] = a[i][j] + 1;
+        i++;
+
         //右上
         while (1) {
-            a[i+1][j-1] = a[i][j] + 1;
+            a[i-1][j+1] = a[i][j] + 1;
             j++;i--;
-            if (0==j && j%2 == 0){
+            if (0==i){
                 break;
             }
         }
     }
     printf("%d\n", a[19][19]);
-}
-
-void test1(void){
-    int a[20][20];
-    a[0][0] = 1;
-    int i = 0;
-    int j = 0;
-    while (1) {
-        if(i==2 && j==2){
-            break;
-        }
-        //右移
-        while (1) {
-            a[i][j+1] = a[i][j] + 1;
-            j++;
-            if (0==i && j%2 == 0){
-                break;
-            }
-        }
-        //左下
-        while (1) {
-            a[i+1][j-1] = a[i][j] + 1;
-            i++;j--;
-            if (0==i && j%2 == 1){
-                break;
-            }
-        }
-        //下
-        while (1) {
-            a[i+1][j] = a[i][j] + 1;
-            i++;
-            if (0==j && i%2 == 1){
-                break;
-            }
-        }
-        //右上
-        while (1) {
-            a[i+1][j-1] = a[i][j] + 1;
-            j++;i--;
-            if (0==j && j%2 == 0){
-                break;
-            }
-        }
-    }
-    printf("%d\n", a[2][2]);
+    
+//    for (int i=0; i<20; i++) {
+//        for (int j=0; j<20; j++) {
+//            printf("%d ", a[i][j]);
+//        }
+//        printf("\n");
+//    }
 }
 int main(int argc, const char * argv[]) {
     test1();
